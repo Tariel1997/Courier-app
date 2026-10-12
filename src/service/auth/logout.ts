@@ -1,18 +1,13 @@
 import $api from '@/api'
-import { ENDPOINTS, LOCALSTORAGE_KEYS } from '@/config'
-import { AxiosError } from 'axios'
+import { ENDPOINTS } from '@/config'
+import tokenStorage from '@/lib/token-storage'
 
 const logout = async () => {
   try {
-    const response = await $api.post(ENDPOINTS.LOGOUT)
-    if (response.data) {
-      localStorage.removeItem(LOCALSTORAGE_KEYS.ACCESS_TOKEN)
-      localStorage.removeItem(LOCALSTORAGE_KEYS.REFRESH_TOKEN)
-    }
-    return response.data
-  } catch (error) {
-    if (error instanceof AxiosError) console.error('Backend error:', error.message)
-    throw error
+    await $api.post(ENDPOINTS.LOGOUT)
+  } finally {
+    // Local session is always cleared, even if the backend call fails
+    tokenStorage.clear()
   }
 }
 

@@ -1,9 +1,10 @@
 import axios from 'axios'
 
-import { ENDPOINTS, LOCALSTORAGE_KEYS } from './config'
+import { ENDPOINTS } from './config'
+import tokenStorage from './lib/token-storage'
 import { refreshToken } from './service/auth/refresh'
 
-const AUTH_PATHS = [ENDPOINTS.LOGIN, ENDPOINTS.REFRESH]
+const AUTH_PATHS = [ENDPOINTS.LOGIN, ENDPOINTS.REGISTER, ENDPOINTS.REFRESH]
 const $api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: { 'Content-Type': 'application/json' },
@@ -11,7 +12,7 @@ const $api = axios.create({
 
 $api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem(LOCALSTORAGE_KEYS.ACCESS_TOKEN)
+    const token = tokenStorage.getAccessToken()
     if (token) config.headers.Authorization = `Bearer ${token}`
     return config
   },

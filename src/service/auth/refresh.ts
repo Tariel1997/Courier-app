@@ -1,4 +1,6 @@
-import { ENDPOINTS, LOCALSTORAGE_KEYS, ROUTES } from '@/config'
+import { ENDPOINTS, ROUTES } from '@/config'
+import tokenStorage from '@/lib/token-storage'
+import { useAuthStore } from '@/store/auth.store'
 import axios from 'axios'
 
 import type { RefreshTokenResponse } from './auth.types'
@@ -12,28 +14,23 @@ export async function refreshToken(): Promise<string> {
 
 async function handleRefresh(): Promise<string> {
   try {
-    const storedRefreshToken = localStorage.getItem('refresh_token')
+    const storedRefreshToken = tokenStorage.getRefreshToken()
     if (!storedRefreshToken) throw new Error('No refresh token available')
 
-    const { data } = (await axios.post(
+    const { data } = await axios.post<RefreshTokenResponse>(
       `${import.meta.env.VITE_API_URL}${ENDPOINTS.REFRESH}`,
       { token: storedRefreshToken },
-    )) as { data: RefreshTokenResponse }
-
-    localStorage.setItem(
-      LOCALSTORAGE_KEYS.ACCESS_TOKEN,
-      data.credentials.accessToken,
     )
-    if (data.credentials.refreshToken)
-      localStorage.setItem(
-        LOCALSTORAGE_KEYS.REFRESH_TOKEN,
-        data.credentials.refreshToken,
-      )
+
+    tokenStorage.setTokens({
+      accessToken: data.credentials.accessToken,
+      refreshToken: data.credentials.refreshToken ?? storedRefreshToken,
+    })
 
     return data.credentials.accessToken
   } catch (error) {
-    localStorage.removeItem(LOCALSTORAGE_KEYS.ACCESS_TOKEN)
-    localStorage.removeItem(LOCALSTORAGE_KEYS.REFRESH_TOKEN)
+    tokenStorage.clear()
+    useAuthStore.getState().clearSession()
     if (window.location.pathname !== ROUTES.LOGIN)
       window.location.href = ROUTES.LOGIN
     throw error

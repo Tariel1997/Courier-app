@@ -1,25 +1,34 @@
-// User types
+import type { Tokens } from '@/lib/token-storage'
+import type { Role, User, UserProfileData } from '@/types/user.types'
 
-export type User = {
-  id: number
-  email: string
-  firstName: string
-  lastName: string
-  role: string
-}
+export type { User }
 
 // Login types
 
-export interface LoginForm {
+export interface LoginPayload {
   email: string
   password: string
+  role: Role
 }
 
-// Refresh token types
+// Register types
+
+export interface RegisterPayload {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  role: Role
+  data: UserProfileData
+}
+
+// Shared auth response (login / register / refresh)
+
+export interface AuthResponse {
+  user: User
+  credentials: Tokens & { userId: number; expiredAt: string }
+}
 
 export interface RefreshTokenResponse {
-  credentials: {
-    accessToken: string
-    refreshToken: string
-  }
+  credentials: Tokens
 }
