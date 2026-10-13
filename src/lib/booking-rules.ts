@@ -1,4 +1,6 @@
+import { getWeekDay, getWorkingHourSlots } from '@/lib/schedule'
 import type { Booking, BookingSlot } from '@/types/booking.types'
+import type { WeekDay, WorkingSchedule } from '@/types/user.types'
 import { format, isToday, parseISO, startOfDay } from 'date-fns'
 
 export const DATE_FORMAT = 'yyyy-MM-dd'
@@ -20,8 +22,6 @@ export const BOOKING_CONFLICT_MESSAGES: Record<BookingConflict, string> = {
   'user-busy': 'You already have another courier booked at this time',
 }
 
-// A courier can serve one user at a time, and a user cannot book two couriers
-// for overlapping hours
 export const findBookingConflict = (
   bookings: Booking[],
   input: BookingSlot,
@@ -70,6 +70,36 @@ export const isUpcoming = (booking: Booking, now = new Date()) => {
   if (isToday(date)) return booking.endHour > now.getHours()
   return date > now
 }
+
+export const findBookingsOutsideSchedule = (
+  bookings: Booking[],
+  courierId: number,
+  schedule: WorkingSchedule,
+  now = new Date(),
+) =>
+  sortBookings(
+    bookings.filter((booking) => {
+      if (booking.courierId !== courierId || !isUpcoming(booking, now)) return false
+      const slots = getWorkingHourSlots(schedule, parseISO(booking.date))
+      return (
+        !slots.includes(booking.startHour) || !slots.includes(booking.endHour - 1)
+      )
+    }),
+  )
+
+export const getBookedWeekDays = (
+  bookings: Booking[],
+  courierId: number,
+  now = new Date(),
+): WeekDay[] => [
+  ...new Set(
+    bookings
+      .filter(
+        (booking) => booking.courierId === courierId && isUpcoming(booking, now),
+      )
+      .map((booking) => getWeekDay(parseISO(booking.date))),
+  ),
+]
 
 export const sortBookings = (bookings: Booking[]) =>
   [...bookings].sort(

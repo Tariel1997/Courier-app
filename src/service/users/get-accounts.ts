@@ -4,7 +4,6 @@ import {
 } from '../profiles/profiles.service'
 import getUsers from './get-users'
 
-// Base accounts merged with their profile edits; removed accounts are hidden
 const getAccounts = async () => {
   const [users, overrides] = await Promise.all([getUsers(), getProfileOverrides()])
 

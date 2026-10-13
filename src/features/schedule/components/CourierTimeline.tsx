@@ -15,7 +15,6 @@ interface CourierTimelineProps {
   highlightCourierId?: number
 }
 
-// One row per courier: day off / working hours / booked hours on the given date
 const CourierTimeline = ({
   couriers,
   bookings,

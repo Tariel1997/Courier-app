@@ -12,7 +12,6 @@ export interface NavItem {
   label: string
   icon: LucideIcon
   to: string
-  // Only highlight on an exact match (used for the cabinet index route)
   end?: boolean
 }
 

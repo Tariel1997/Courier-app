@@ -44,7 +44,6 @@ const BookCourierDialog = ({ courier }: BookCourierDialogProps) => {
   const [address, setAddress] = useState(profileAddress)
 
   const schedule = courier.data?.workingDays
-  // Same rules as the address field of the registration form
   const addressCheck = addressField.schema.safeParse(address)
   const addressError = addressCheck.success
     ? null

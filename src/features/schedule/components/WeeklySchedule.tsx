@@ -6,7 +6,6 @@ interface WeeklyScheduleProps {
   className?: string
 }
 
-// Monday → Sunday overview with the working hours of each day
 const WeeklySchedule = ({ schedule = {}, className }: WeeklyScheduleProps) => (
   <div className={cn('grid grid-cols-4 gap-2 sm:grid-cols-7', className)}>
     {WEEK_DAYS.map((day) => {

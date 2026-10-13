@@ -4,8 +4,6 @@ import { useAuthStore } from '@/store/auth.store'
 import { useBookingsStore } from '@/store/bookings.store'
 import { useEffect } from 'react'
 
-// Loads accounts + bookings once per cabinet and keeps the session user in sync
-// with edits made elsewhere (e.g. an admin changed the schedule or removed the account)
 export const useCabinetData = () => {
   const fetchAccounts = useAccountsStore((state) => state.fetchAccounts)
   const fetchBookings = useBookingsStore((state) => state.fetchBookings)

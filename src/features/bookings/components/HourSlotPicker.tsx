@@ -19,8 +19,6 @@ const STATUS_HINTS: Record<Exclude<SlotStatus, 'free'>, string> = {
   'user-busy': 'You have another courier',
 }
 
-// First click picks a start hour, a second click on a later hour extends the
-// range as long as every hour in between is free
 const HourSlotPicker = ({ slots, value, onChange }: HourSlotPickerProps) => {
   const isFree = (hour: number) =>
     slots.find((slot) => slot.hour === hour)?.status === 'free'

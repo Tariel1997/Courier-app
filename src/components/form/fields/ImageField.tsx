@@ -8,7 +8,6 @@ import { fieldControlClassName } from '../controls/field-styles'
 import type { FieldRendererProps, ImageFieldConfig } from '../form.types'
 import FormFieldWrapper from './FormFieldWrapper'
 
-// Accepts an image link and previews it; the link itself is what gets submitted
 const ImageField = ({
   config,
   field,

@@ -22,7 +22,6 @@ interface ConfirmButtonProps {
   onConfirm: () => Promise<void>
 }
 
-// Destructive action guarded by a confirmation dialog
 const ConfirmButton = ({
   label,
   icon: Icon,

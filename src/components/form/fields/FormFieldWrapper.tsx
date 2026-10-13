@@ -15,7 +15,6 @@ interface FormFieldWrapperProps {
   children: ReactNode
 }
 
-// Shared label / description / error layout for every visible field
 const FormFieldWrapper = ({ config, error, children }: FormFieldWrapperProps) => (
   <Field
     data-invalid={!!error}

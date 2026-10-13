@@ -35,7 +35,6 @@ export const useAccountsStore = create<AccountsState>()((set, get) => ({
   reset: () => set(initialState),
 
   fetchAccounts: async () => {
-    // Background refreshes keep showing the data that is already loaded
     if (get().status !== 'ready') set({ status: 'loading', error: null })
     try {
       set({ accounts: await getAccounts(), status: 'ready' })

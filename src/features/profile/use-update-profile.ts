@@ -1,12 +1,12 @@
 import type { FieldConfig } from '@/components/form/form.types'
 import { getErrorMessage } from '@/lib/get-error-message'
+import { assertScheduleKeepsBookings } from '@/service/bookings/bookings.service'
 import { useAccountsStore } from '@/store/accounts.store'
 import { useAuthStore } from '@/store/auth.store'
 import { useState } from 'react'
 
 import { toProfilePatch, type ProfileFormValues } from './profile.mapper'
 
-// Saves profile edits of any account; the own session is refreshed when needed
 export const useUpdateProfile = (userId: number, fields: FieldConfig[]) => {
   const updateAccount = useAccountsStore((state) => state.updateAccount)
   const [error, setError] = useState<string | null>(null)
@@ -20,6 +20,10 @@ export const useUpdateProfile = (userId: number, fields: FieldConfig[]) => {
         values,
         fields.map((field) => field.name),
       )
+
+      if (patch.data?.workingDays)
+        await assertScheduleKeepsBookings(userId, patch.data.workingDays)
+
       const updated = await updateAccount(userId, patch)
 
       const { user, setUser } = useAuthStore.getState()

@@ -26,7 +26,6 @@ interface AccountsTableProps {
   rowActions?: (account: User) => ReactNode
 }
 
-// Admin list of accounts; extra columns and actions are supplied by the page
 const AccountsTable = ({ accounts, columns, rowActions }: AccountsTableProps) => {
   const deleteAccount = useAccountsStore((state) => state.deleteAccount)
   const forgetAccount = useBookingsStore((state) => state.forgetAccount)

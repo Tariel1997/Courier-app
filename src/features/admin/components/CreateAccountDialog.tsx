@@ -20,7 +20,6 @@ interface CreateAccountDialogProps {
   role: Role
 }
 
-// Reuses the registration template of the role, so validation stays identical
 const CreateAccountDialog = ({ role }: CreateAccountDialogProps) => {
   const createAccount = useAccountsStore((state) => state.createAccount)
   const [open, setOpen] = useState(false)

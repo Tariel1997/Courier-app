@@ -31,7 +31,6 @@ export const useBookingsStore = create<BookingsState>()((set, get) => ({
   reset: () => set(initialState),
 
   fetchBookings: async () => {
-    // Background refreshes keep showing the data that is already loaded
     if (get().status !== 'ready') set({ status: 'loading', error: null })
     try {
       set({ bookings: await getBookings(), status: 'ready' })
@@ -49,7 +48,6 @@ export const useBookingsStore = create<BookingsState>()((set, get) => ({
       set({ bookings: [...get().bookings, booking] })
       return booking
     } catch (error) {
-      // Someone may have taken the slot meanwhile — show the latest availability
       void get().fetchBookings()
       throw error
     }
@@ -60,7 +58,6 @@ export const useBookingsStore = create<BookingsState>()((set, get) => ({
     set({ bookings: get().bookings.filter((booking) => booking.id !== bookingId) })
   },
 
-  // Bookings of a removed account are deleted on the server; mirror it locally
   forgetAccount: (accountId) =>
     set({
       bookings: get().bookings.filter(

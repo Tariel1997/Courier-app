@@ -19,7 +19,6 @@ import { CalendarXIcon, MapPinIcon, XIcon } from 'lucide-react'
 interface BookingsTableProps {
   bookings: Booking[]
   accountMap: Map<number, User>
-  // Which side of the booking to show — the other one is the current viewer
   show: ('courier' | 'user')[]
   canCancel?: boolean
   emptyText?: string
@@ -42,7 +41,6 @@ const BookingsTable = ({
     return account ? getFullName(account) : 'Removed account'
   }
 
-  // Older bookings have no address of their own — fall back to the customer's profile
   const addressOf = (booking: Booking) =>
     booking.address || accountMap.get(booking.userId)?.data?.address || '—'
 

@@ -21,7 +21,7 @@ const RegisterPage = () => {
       <div className="flex flex-col gap-6">
         <RoleSwitcher value={role} onChange={setRole} />
 
-        {/* `key` remounts the form so each role gets a fresh template and schema */}
+        {}
         <BaseForm<RegisterFormValues>
           key={role}
           fields={registerTemplates[role]}

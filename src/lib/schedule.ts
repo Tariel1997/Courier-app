@@ -8,7 +8,6 @@ import {
 export const MIN_WORKING_DAYS = 5
 const HOURS_IN_DAY = 24
 
-// Schedules saved before hours were introduced only listed day names
 const LEGACY_WORKING_HOURS: WorkingHours = { startHours: '09:00', endHours: '18:00' }
 
 export const formatHour = (hour: number) => `${String(hour).padStart(2, '0')}:00`
@@ -16,7 +15,6 @@ export const formatHour = (hour: number) => `${String(hour).padStart(2, '0')}:00
 export const formatHourRange = (startHour: number, endHour: number) =>
   `${formatHour(startHour)} – ${formatHour(endHour)}`
 
-// "15:20" → 15.33…
 export const timeToHours = (time: string) => {
   const [hours = 0, minutes = 0] = time.split(':').map(Number)
   return hours + minutes / 60
@@ -28,7 +26,6 @@ const hourOptions = (from: number, to: number) =>
     return { value, label: value }
   })
 
-// One hour step: a shift can start at 00:00 … 23:00 and end at 01:00 … 24:00
 export const START_TIME_OPTIONS = hourOptions(0, HOURS_IN_DAY - 1)
 export const END_TIME_OPTIONS = hourOptions(1, HOURS_IN_DAY)
 
@@ -40,7 +37,6 @@ export const WEEK_DAY_OPTIONS = WEEK_DAYS.map((day) => ({
   label: capitalize(day),
 }))
 
-// Shape used by the dynamic form rows: one row = one day with its hours
 export interface ScheduleRow {
   day: WeekDay | ''
   startHours: string
@@ -56,7 +52,6 @@ export const EMPTY_SCHEDULE_ROW: ScheduleRow = {
 const isWeekDay = (value: unknown): value is WeekDay =>
   WEEK_DAYS.includes(value as WeekDay)
 
-// Accepts both the current object format and the legacy array of day names
 export const normalizeSchedule = (raw: unknown): WorkingSchedule => {
   if (Array.isArray(raw)) {
     return Object.fromEntries(
@@ -78,7 +73,6 @@ export const normalizeSchedule = (raw: unknown): WorkingSchedule => {
   return {}
 }
 
-// Ordered from Monday to Sunday so the UI stays predictable
 export const getScheduleEntries = (schedule: WorkingSchedule = {}) =>
   WEEK_DAYS.flatMap((day) => {
     const hours = schedule[day]
@@ -95,13 +89,11 @@ export const rowsToSchedule = (rows: ScheduleRow[] = []): WorkingSchedule =>
       .map(({ day, startHours, endHours }) => [day, { startHours, endHours }]),
   )
 
-// JS Date#getDay() starts the week on Sunday
 export const getWeekDay = (date: Date): WeekDay => WEEK_DAYS[(date.getDay() + 6) % 7]
 
 export const isWorkingDate = (schedule: WorkingSchedule = {}, date: Date) =>
   Boolean(schedule[getWeekDay(date)])
 
-// Whole hours a courier can be booked for on the given date (start hour of each slot)
 export const getWorkingHourSlots = (
   schedule: WorkingSchedule = {},
   date: Date,

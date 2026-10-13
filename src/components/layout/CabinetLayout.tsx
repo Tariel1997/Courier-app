@@ -8,7 +8,6 @@ interface CabinetLayoutProps {
   navItems: NavItem[]
 }
 
-// Shared shell of every personal cabinet: navigation + data bootstrap
 const CabinetLayout = ({ navItems }: CabinetLayoutProps) => {
   const { isLoading, error } = useCabinetData()
 

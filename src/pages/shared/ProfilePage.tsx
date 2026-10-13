@@ -3,7 +3,6 @@ import ProfileEditor from '@/features/profile/components/ProfileEditor'
 import { profileTemplates } from '@/features/profile/profile-templates'
 import { useAuthStore } from '@/store/auth.store'
 
-// Own profile page of an admin, user or courier — the template depends on the role
 const ProfilePage = () => {
   const user = useAuthStore((state) => state.user)
   if (!user) return null

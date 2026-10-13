@@ -25,7 +25,6 @@ const useSessionStart = () => {
   const setUser = useAuthStore((state) => state.setUser)
 
   return (user: User) => {
-    // Never show data cached from a previous session
     useAccountsStore.getState().reset()
     useBookingsStore.getState().reset()
     setUser(user)

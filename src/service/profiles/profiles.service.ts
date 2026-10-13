@@ -5,8 +5,6 @@ import {
   type ResourceRecord,
 } from '../resource/resource-client'
 
-// The API has no endpoints to update or delete accounts, so edits and removals
-// are stored as an override record that is merged on top of the base account
 export interface ProfileOverride {
   userId: number
   firstName?: string

@@ -22,7 +22,6 @@ interface BaseFormProps<TValues extends FormValues> {
   className?: string
 }
 
-// Generic form: renders any list of field configs and validates them with zod
 function BaseForm<TValues extends FormValues>({
   fields,
   onSubmit,

@@ -11,8 +11,6 @@ const nameSchema = (label: string) =>
     .max(32, `${label} must be at most 32 characters`)
     .regex(/^[\p{L}\s'-]+$/u, `${label} can only contain letters`)
 
-// Each field is a reusable building block; templates only compose them
-
 export const firstNameField: FieldConfig = {
   name: 'firstName',
   label: 'First name',
@@ -92,7 +90,6 @@ export const passwordField: FieldConfig = {
     .regex(/\d/, 'Password must contain at least one number'),
 }
 
-// Login only checks presence — complexity rules apply on registration
 export const loginPasswordField: FieldConfig = {
   ...passwordField,
   placeholder: 'Your password',
@@ -171,8 +168,6 @@ export const workingDaysField: FieldConfig = {
   colSpan: 2,
   schema: z
     .array(scheduleRowSchema)
-    // `root` keeps this message next to the per-row errors; `when` runs it even
-    // while some rows are still invalid
     .refine((rows) => rows.length >= MIN_WORKING_DAYS, {
       path: ['root'],
       message: `Add at least ${MIN_WORKING_DAYS} working days`,

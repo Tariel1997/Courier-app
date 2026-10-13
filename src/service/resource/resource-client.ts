@@ -9,8 +9,6 @@ export interface ResourceRecord<TData> {
   updatedAt: string
 }
 
-// Typed wrapper around the backend's generic json `resource` CRUD.
-// The API ignores unknown query filters, so filtering happens on the client.
 export const createResourceClient = <TData extends object>(resource: string) => ({
   list: async () => {
     const { data } = await $api.get<ResourceRecord<TData>[]>(
@@ -27,7 +25,6 @@ export const createResourceClient = <TData extends object>(resource: string) => 
     return data
   },
 
-  // The backend replaces the whole `data` object
   update: async (id: string, item: TData) => {
     await $api.put(ENDPOINTS.RESOURCE_ID(resource, id), { data: item })
   },

@@ -10,7 +10,6 @@ type RendererMap = {
   [T in FieldType]: FieldRenderer<Extract<FieldConfig, { type: T }>>
 }
 
-// New field types are supported by adding a renderer here — BaseForm stays untouched
 const fieldRegistry: RendererMap = {
   text: InputField,
   email: InputField,

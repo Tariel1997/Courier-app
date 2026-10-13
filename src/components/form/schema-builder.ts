@@ -9,7 +9,6 @@ const isEmpty = (value: unknown) =>
   value === undefined ||
   (Array.isArray(value) && value.length === 0)
 
-// Empty values of optional fields are normalized to `undefined` before validation
 const toOptional = (schema: z.ZodType) =>
   z.preprocess((value) => (isEmpty(value) ? undefined : value), schema.optional())
 

@@ -28,8 +28,6 @@ export const toProfileFormValues = (user: User): ProfileFormValues => ({
   workingDays: scheduleToRows(user.data?.workingDays),
 })
 
-// Only fields of the submitted template end up in the patch;
-// a cleared optional field is saved as an empty value so it really gets removed
 export const toProfilePatch = (
   values: ProfileFormValues,
   fieldNames: string[],

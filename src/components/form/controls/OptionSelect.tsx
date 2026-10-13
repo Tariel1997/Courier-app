@@ -23,12 +23,12 @@ interface OptionSelectProps {
   onBlur?: () => void
   placeholder?: string
   invalid?: boolean
+  disabled?: boolean
   triggerRef?: Ref<HTMLButtonElement>
   className?: string
   'aria-label'?: string
 }
 
-// Dark themed shadcn select driven by a plain list of options
 const OptionSelect = ({
   id,
   value,
@@ -37,12 +37,14 @@ const OptionSelect = ({
   onBlur,
   placeholder,
   invalid,
+  disabled,
   triggerRef,
   className,
   'aria-label': ariaLabel,
 }: OptionSelectProps) => (
   <Select
     items={options}
+    disabled={disabled}
     value={value || null}
     onValueChange={(next) => onChange((next as string | null) ?? '')}
   >

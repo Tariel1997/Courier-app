@@ -9,7 +9,7 @@ import {
 } from '@/lib/schedule'
 import { cn } from '@/lib/utils'
 import { WEEK_DAYS } from '@/types/user.types'
-import { CalendarPlusIcon, PlusIcon, Trash2Icon } from 'lucide-react'
+import { CalendarPlusIcon, LockIcon, PlusIcon, Trash2Icon } from 'lucide-react'
 
 import OptionSelect from '../controls/OptionSelect'
 import type { FieldRendererProps, ScheduleFieldConfig } from '../form.types'
@@ -17,7 +17,6 @@ import FormFieldWrapper from './FormFieldWrapper'
 
 type RowErrors = Partial<Record<keyof ScheduleRow, { message?: string }>>
 
-// react-hook-form nests row errors by index and list level errors under `root`
 interface ScheduleFieldError {
   message?: string
   root?: { message?: string }
@@ -49,7 +48,6 @@ const ScheduleField = ({
 
   const changeStart = (index: number, startHours: string) => {
     const { endHours } = rows[index]
-    // Drop an end time that would no longer be after the new start
     const keepEnd = endHours && timeToHours(endHours) > timeToHours(startHours)
     updateRow(index, { startHours, endHours: keepEnd ? endHours : '' })
   }
@@ -89,6 +87,7 @@ const ScheduleField = ({
 
         {rows.map((row, index) => {
           const rowErrors = error?.[index]
+          const isLocked = !!row.day && !!config.lockedDays?.includes(row.day)
           const takenDays = rows
             .filter((_, rowIndex) => rowIndex !== index)
             .map((other) => other.day)
@@ -103,6 +102,7 @@ const ScheduleField = ({
                   aria-label={`Day ${index + 1}`}
                   className="col-span-2 sm:col-span-1"
                   value={row.day}
+                  disabled={isLocked}
                   placeholder="Select day"
                   invalid={!!rowErrors?.day}
                   options={WEEK_DAY_OPTIONS.map((option) => ({
@@ -139,12 +139,21 @@ const ScheduleField = ({
                   size="icon-lg"
                   variant="destructive"
                   onClick={() => removeRow(index)}
+                  disabled={isLocked}
                   aria-label={`Remove day ${index + 1}`}
                   className="col-span-2 h-11 w-full rounded-2xl sm:col-span-1 sm:w-11"
                 >
                   <Trash2Icon />
                 </Button>
               </div>
+
+              {isLocked && !rowErrors && (
+                <p className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <LockIcon className="size-3.5" />
+                  Users have booked this day — it can’t be removed, and booked hours
+                  must stay inside the shift.
+                </p>
+              )}
 
               {rowErrors && (
                 <p className="mt-2 text-xs text-destructive">

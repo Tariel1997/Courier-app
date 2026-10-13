@@ -14,7 +14,6 @@ interface TimelineSectionProps {
   highlightCourierId?: number
 }
 
-// Day view of every courier's working and booked hours
 const TimelineSection = ({
   title = 'Couriers activity',
   description = 'Working and booked hours of every courier on the selected day',

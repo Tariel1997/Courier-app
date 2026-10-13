@@ -28,7 +28,6 @@ export const WEEK_DAYS = [
 ] as const
 export type WeekDay = (typeof WEEK_DAYS)[number]
 
-// Times are stored as "HH:MM" strings, e.g. { startHours: '09:00', endHours: '18:00' }
 export interface WorkingHours {
   startHours: string
   endHours: string
@@ -36,7 +35,6 @@ export interface WorkingHours {
 
 export type WorkingSchedule = Partial<Record<WeekDay, WorkingHours>>
 
-// Role specific fields are stored inside the backend's free-form `data` column
 export interface UserProfileData {
   pid?: string
   phoneNumber?: string

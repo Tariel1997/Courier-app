@@ -7,7 +7,6 @@ export interface LoginFormValues extends Record<string, unknown> {
   role: Role
 }
 
-// Union of every register template's values — role specific fields are optional here
 export interface RegisterFormValues extends Record<string, unknown> {
   role: Role
   firstName: string

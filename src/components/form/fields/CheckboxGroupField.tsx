@@ -16,7 +16,6 @@ const CheckboxGroupField = ({
       ? [...selected, value]
       : selected.filter((item) => item !== value)
 
-    // Keep the original option order regardless of click order
     field.onChange(
       config.options
         .map((option) => option.value)

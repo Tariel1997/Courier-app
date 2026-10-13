@@ -1,3 +1,4 @@
+import type { WeekDay } from '@/types/user.types'
 import type { ComponentType } from 'react'
 import type { ControllerFieldState, ControllerRenderProps } from 'react-hook-form'
 import type { z } from 'zod'
@@ -22,13 +23,11 @@ export interface FieldOption {
 interface BaseFieldConfig {
   name: string
   label: string
-  // Validation rules for a filled-in value; `optional` decides if it can be empty
   schema: z.ZodType
   optional?: boolean
   placeholder?: string
   description?: string
   autoComplete?: string
-  // How many grid columns the field takes inside the form (1 or 2)
   colSpan?: 1 | 2
 }
 
@@ -49,10 +48,10 @@ export interface HiddenFieldConfig extends BaseFieldConfig {
   type: 'hidden'
 }
 
-// Dynamic list of "day + working hours" rows
 export interface ScheduleFieldConfig extends BaseFieldConfig {
   type: 'schedule'
   minRows: number
+  lockedDays?: WeekDay[]
 }
 
 export type FieldConfig =
